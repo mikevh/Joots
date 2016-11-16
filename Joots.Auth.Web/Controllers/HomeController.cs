@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,9 +11,16 @@ namespace Joots.Auth.Web.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            var tokenTimeoutInMinutes = ConfigurationManager.AppSettings["TokenTimeoutInMinutes"] ?? "999";
 
-            return View();
+            return View(tokenTimeoutInMinutes as object);
+        }
+
+        [Authorize]
+        public ActionResult Protected()
+        {
+
+            return new ContentResult {Content = "hello!"};
         }
     }
 }
